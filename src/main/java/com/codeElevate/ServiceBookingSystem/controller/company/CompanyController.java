@@ -1,4 +1,4 @@
-package com.codeElevate.ServiceBookingSystem.controller;
+package com.codeElevate.ServiceBookingSystem.controller.company;
 
 import com.codeElevate.ServiceBookingSystem.dto.AdDTO;
 import com.codeElevate.ServiceBookingSystem.dto.ReservationDTO;

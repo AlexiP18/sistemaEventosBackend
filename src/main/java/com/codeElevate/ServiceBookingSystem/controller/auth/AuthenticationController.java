@@ -1,4 +1,4 @@
-package com.codeElevate.ServiceBookingSystem.controller;
+package com.codeElevate.ServiceBookingSystem.controller.auth;
 
 import com.codeElevate.ServiceBookingSystem.dto.AuthenticationRequest;
 import com.codeElevate.ServiceBookingSystem.dto.SignupRequestDTO;
@@ -20,7 +20,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
