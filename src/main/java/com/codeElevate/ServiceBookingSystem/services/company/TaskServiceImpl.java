@@ -83,7 +83,7 @@ public class TaskServiceImpl implements TaskService{
     public List<UserDto> getAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .filter(user -> user.getRole() == UserRole.COMPANY)
+                .filter(user -> user.getRole() == UserRole.CLIENT)
                 .map(User::getDto)
                 .collect(Collectors.toList());
     }

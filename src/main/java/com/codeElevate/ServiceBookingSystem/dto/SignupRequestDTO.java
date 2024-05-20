@@ -18,4 +18,11 @@ public class SignupRequestDTO {
 
     private String phone;
 
+    public SignupRequestDTO(String email, String password, String name, String lastname, String phone) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.lastname = lastname;
+        this.phone = phone;
+    }
 }

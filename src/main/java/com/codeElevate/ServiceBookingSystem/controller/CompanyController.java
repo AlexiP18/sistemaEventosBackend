@@ -20,6 +20,9 @@ public class CompanyController {
 
     @PostMapping("/ad/{userId}")
     public ResponseEntity<?> postAd(@PathVariable Long userId, @ModelAttribute AdDTO adDTO) throws IOException {
+        if (adDTO == null || adDTO.isEmpty()) {
+            return ResponseEntity.badRequest().build(); // Devuelve un código de estado 400 para datos vacíos
+        }
         boolean success = companyService.postAd(userId, adDTO);
         if(success){
             return ResponseEntity.status(HttpStatus.OK).build();

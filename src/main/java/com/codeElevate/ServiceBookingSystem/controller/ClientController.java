@@ -2,6 +2,9 @@ package com.codeElevate.ServiceBookingSystem.controller;
 
 import com.codeElevate.ServiceBookingSystem.dto.ReservationDTO;
 import com.codeElevate.ServiceBookingSystem.dto.ReviewDTO;
+import com.codeElevate.ServiceBookingSystem.dto.SignupRequestDTO;
+import com.codeElevate.ServiceBookingSystem.dto.UserDto;
+import com.codeElevate.ServiceBookingSystem.services.authentication.AuthService;
 import com.codeElevate.ServiceBookingSystem.services.client.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/client")
 public class ClientController {
+
+    @Autowired
+    private AuthService authService;
 
     @Autowired
     private ClientService clientService;
@@ -55,5 +61,22 @@ public class ClientController {
         }
     }
 
+    @PostMapping("/client/signup")
+    public ResponseEntity<?> signup(@RequestBody SignupRequestDTO requestDTO) {
+        if (requestDTO == null || areFieldsNullOrEmpty(requestDTO)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("All fields are required");
+        }
 
+        UserDto createdUser = authService.signupClient(requestDTO);
+        return ResponseEntity.ok(createdUser);
+
+    }
+
+    private boolean areFieldsNullOrEmpty(SignupRequestDTO requestDTO) {
+        return requestDTO.getEmail() == null || requestDTO.getPassword() == null ||
+                requestDTO.getName() == null || requestDTO.getLastname() == null ||
+                requestDTO.getPhone() == null || requestDTO.getEmail().isEmpty() ||
+                requestDTO.getPassword().isEmpty() || requestDTO.getName().isEmpty() ||
+                requestDTO.getLastname().isEmpty() || requestDTO.getPhone().isEmpty();
+    }
 }

@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/employee")
+@RequestMapping("/api/client")
 @RequiredArgsConstructor
 public class TaskClientController {
     @Qualifier("TaskServiceClient")

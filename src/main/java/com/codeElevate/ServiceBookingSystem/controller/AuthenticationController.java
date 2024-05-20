@@ -1,6 +1,7 @@
 package com.codeElevate.ServiceBookingSystem.controller;
 
 import com.codeElevate.ServiceBookingSystem.dto.AuthenticationRequest;
+import com.codeElevate.ServiceBookingSystem.dto.AuthenticationResponse;
 import com.codeElevate.ServiceBookingSystem.dto.SignupRequestDTO;
 import com.codeElevate.ServiceBookingSystem.dto.UserDto;
 import com.codeElevate.ServiceBookingSystem.entity.User;
@@ -8,6 +9,7 @@ import com.codeElevate.ServiceBookingSystem.repository.UserRepository;
 import com.codeElevate.ServiceBookingSystem.services.authentication.AuthService;
 import com.codeElevate.ServiceBookingSystem.services.jwt.UserDetailsServiceImpl;
 import com.codeElevate.ServiceBookingSystem.utill.JwtUtil;
+import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,10 +20,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -99,5 +99,29 @@ public class AuthenticationController {
                 " X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept, X-Custom-header");
 
         response.addHeader(HEADER_STRING, TOKEN_PREFIX+jwt);
+    }
+
+    @PostMapping("/authenticates")
+    public ResponseEntity<?> createsAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) throws IOException {
+        String username = authenticationRequest.getUsername();
+        String password = authenticationRequest.getPassword();
+
+        if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username and password cannot be blank");
+        }
+
+        try {
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            // Aquí deberías implementar la generación de token
+            String token = "some_generated_token";
+            return ResponseEntity.ok(new AuthenticationResponse(token));
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<String> handleUsernameNotFoundException(UsernameNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
     }
 }
