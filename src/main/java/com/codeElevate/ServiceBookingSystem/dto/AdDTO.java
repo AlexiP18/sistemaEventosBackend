@@ -22,4 +22,11 @@ public class AdDTO {
     private Long userId;
 
     private String companyName;
+
+    public boolean isEmpty() {
+        return serviceName == null || serviceName.isEmpty() ||
+                description == null || description.isEmpty() ||
+                img == null || img.isEmpty() ||  // Esto puede variar dependiendo de la implementación de MultipartFile
+                price == null;  // Otra posible validación dependiendo de tus requisitos
+    }
 }
